@@ -5,7 +5,28 @@ import sqlite3
 
 import click
 from flask import current_app, g
+from flask import cli
 from flask.cli import with_appcontext
+
+def init_app(app):
+    # レスポンスを返した後，クリーンアップを行っているときにclose_dbを呼び出す
+    app.teardown_appcontext(close_db)
+    # flaskコマンドで呼び出せるコマンドを追加
+    app.cli.add_command(init_db_command)
+
+# DBの作成
+def init_db():
+    db = get_db()
+
+    with current_app.open_resource('schema.sql') as f:
+        db.executescript(f.read().decode("utf-8"))
+
+# init-dbと呼ばれるコマンドを作成する．内容は以下の関数内
+@click.command("init-db")
+@with_appcontext
+def init_db_command():
+    init_db()
+    click.echo("Initialized the database")    
 
 # DBの接続を行う．操作する際にまずはconnection
 def get_db():
