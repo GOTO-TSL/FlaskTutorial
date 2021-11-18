@@ -1,0 +1,18 @@
+<!-- base.htmlのテンプレートからブロックを置き換えることを宣言する -->
+{%  extends 'base.html' %}
+
+<!-- ウィンドウとページが同じタイトルを共有できるようにタイトルをヘッダーの内側で定義 -->
+{% block header %}
+  <h1>{% block title %}Register{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+      <label for="username">Username</label>
+      <!-- requiredは入力されていないうちは投稿を提出しない-->
+      <input for="username" id="username" required>
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" required>
+      <input type="submit" value="Register">
+  </form>
+{% endblock %}
