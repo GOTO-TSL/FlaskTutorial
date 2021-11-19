@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block header %}
+ <h1>{% block title %}Edit "{{ post['title'] }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<!-- /<id>/updateへ編集データを送信(HTTPメソッドのPOST)-->
+  <form method="post">
+      <label for="title">Title</label>
+      <input name="title" id="title" value="{{ request.form['title'] or post['title'] }}" required>
+      <label for="body">Body</label>
+      <!-- テキストエリアに表示される文章を２つから選択する -->
+      <!-- 投稿が送信されてエラーになった場合は不正なテキストをそのまま表示する -->
+      <textarea name="body" id="body">{{ request.form['body'] or post['body'] }}</textarea>
+      <input type="submit" value="Save">
+  </form>
+  <hr>
+  <!-- 削除ボタン 削除のルートへ移動 ポップアップの表示 -->
+  <form action="{{ url_for('blog.delete', id=post['id']) }}" method="post">
+      <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+  </form>
+{% endblock %}

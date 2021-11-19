@@ -33,8 +33,8 @@ def register():
     # ユーザーがフォームを送信した場合request.methodはPOSTになり，入力データの検証を行う
     if request.method == "POST":
         # request.formは提出されたformのキーと値を対応付ける特別なdictオブジェクト
-        username = request.form["username"]
-        password = request.form["password"]
+        username = request.form.get('username', False)
+        password = request.form['password']
         db = get_db()
         error = None
         # 空かどうかを検証
